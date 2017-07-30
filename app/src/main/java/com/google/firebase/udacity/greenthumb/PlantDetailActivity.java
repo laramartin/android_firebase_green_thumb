@@ -31,7 +31,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.udacity.greenthumb.data.DbContract.PlantEntry;
 import com.google.firebase.udacity.greenthumb.data.Plant;
 import com.google.firebase.udacity.greenthumb.data.PlantCartHelper;
@@ -95,17 +94,7 @@ public class PlantDetailActivity extends AppCompatActivity
                 int quantity = 1;
                 PlantCartHelper.addCartQuantity(this, mPlant.id, quantity);
                 Snackbar.make(v, R.string.shopping_cart_item_added, Snackbar.LENGTH_SHORT).show();
-
-                Bundle params = new Bundle();
-                params.putInt(FirebaseAnalytics.Param.ITEM_ID, mPlant.id);
-                params.putString(FirebaseAnalytics.Param.ITEM_NAME, mPlant.name);
-                params.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "plants");
-                params.putInt(FirebaseAnalytics.Param.QUANTITY, quantity);
-                params.putDouble(FirebaseAnalytics.Param.PRICE, mPlant.price);
-                FirebaseAnalytics.getInstance(this).logEvent(
-                        FirebaseAnalytics.Event.ADD_TO_CART,
-                        params
-                );
+                Analytics.logEventAddToCart(this, mPlant, quantity);
                 break;
         }
     }
